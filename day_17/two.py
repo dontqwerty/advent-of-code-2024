@@ -45,7 +45,7 @@ iteration ``B`` is computed based only on the value of ``A`` at the beginning of
 
 The minimum value of ``A`` that correctly computes ``B`` is found using the ``z3-solver`` library.
 
-Specifically, ``18`` constrains and ``1`` objective are added optimizer model of the ``z3`` module:
+Specifically, ``18`` constrains and ``1`` objective are added to the ``Optimizer`` class:
 
 - 2 constrains to fix an upper and lower bound of ``A``. This is not necessary for the
 solution to work, but it makes the execution time slighlty faster.
