@@ -1,24 +1,20 @@
 import re
 from z3 import Optimize, sat, BitVec
 
-program = list(map(int, re.findall(r"\d+", open("input").read().split("\n\n")[1])))
-a = BitVec("a", 64)
-outs = [BitVec(f"out_{i}", 64) for i in range(len(program))]
+prog = list(map(int, re.findall(r"\d+", open("input").read().split("\n\n")[1])))
+a = BitVec("A", 64)
 o = Optimize()
-o.add(a > 8 ** (len(program) - 1))
-o.add(a < 8 ** (len(program)))
-for i in range(len(program)):
+o.add(a > 8 ** (len(prog) - 1))
+o.add(a < 8 ** (len(prog)))
+for i in range(len(prog)):
     o.add(
-        outs[i]
-        == (
+        (
             ((((a >> (3 * i)) % 8) ^ 3) ^ 5)
             ^ ((a >> (3 * i)) >> (((a >> (3 * i)) % 8) ^ 3))
         )
         % 8
+        == prog[i]
     )
-    o.add(outs[i] == program[i])
 o.minimize(a)
-if o.check() == sat:
-    result = int(o.model().evaluate(a).as_string())
-
-print(result)
+assert o.check() == sat
+print(o.model().evaluate(a))
